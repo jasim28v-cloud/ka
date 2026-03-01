@@ -7,7 +7,7 @@
     <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5">
     <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    <title>SHADOW | LIVE</title>
+    <title>SHADOW | REAL INTERACTION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -20,14 +20,14 @@
         
         body { background: #000; color: #fff; margin: 0; overflow: hidden; font-family: 'Cairo', sans-serif; }
 
-        /* الهيدر العلوي (نفس الصورة) */
+        /* الهيدر العلوي */
         .shadow-header {
             position: fixed; top: 0; width: 100%; height: 60px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 15px; z-index: 1000;
         }
-        .logo-shadow { font-family: 'Orbitron'; font-style: italic; font-weight: 900; font-size: 20px; letter-spacing: 1px; }
+        .logo-shadow { font-family: 'Orbitron'; font-style: italic; font-weight: 900; font-size: 20px; color: #fff; }
         .level-badge { color: #00f2ff; font-family: 'Orbitron'; font-size: 10px; font-weight: bold; border-bottom: 1px solid #00f2ff; }
 
         /* حاوية الفيديوهات */
@@ -36,27 +36,31 @@
         .v-slide { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; }
         video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* الأيقونات الجانبية (نفس الصورة) */
+        /* الأيقونات الجانبية التفاعلية */
         .side-btns { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 15px; z-index: 100; }
         .btn-box { 
-            width: 50px; height: 50px; background: rgba(0,0,0,0.5); border-radius: 12px;
+            width: 50px; height: 50px; background: rgba(0,0,0,0.6); border-radius: 12px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s;
         }
-        .btn-box i { font-size: 18px; }
+        .btn-box:active { transform: scale(0.9); background: #00f2ff; color: #000; }
         .btn-box span { font-size: 10px; margin-top: 2px; font-weight: bold; }
 
-        /* شريط التحكم السفلي (الأبيض - نفس الصورة) */
+        /* شريط التحكم السفلي */
         .nav-footer {
             position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
             width: 92%; height: 65px; background: rgba(0,0,0,0.9);
             border-radius: 15px; display: flex; justify-content: space-around; align-items: center;
-            padding: 0 10px; border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1); z-index: 1000;
         }
-        .nav-item { color: #555; font-size: 20px; }
-        .nav-item.active { color: #00f2ff; }
-        .add-master { 
-            width: 50px; height: 45px; background: #fff; color: #000; 
-            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px;
+        .add-master { width: 50px; height: 45px; background: #fff; color: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; }
+
+        /* نافذة التعليقات الحقيقية */
+        #comment-section {
+            position: fixed; bottom: 0; width: 100%; height: 60%;
+            background: rgba(10,10,10,0.98); border-radius: 25px 25px 0 0;
+            z-index: 2000; display: none; flex-direction: column; padding: 20px;
+            border-top: 2px solid #00f2ff;
         }
     </style>
 </head>
@@ -70,18 +74,34 @@
     <main class="v-container" id="feed"></main>
 
     <nav class="nav-footer">
-        <i class="fas fa-home nav-item"></i>
-        <i class="fas fa-share-alt nav-item"></i>
+        <i class="fas fa-home text-white/50 text-xl"></i>
+        <i class="fas fa-share-alt text-white/50 text-xl"></i>
         <div class="add-master" id="upload-btn"><i class="fas fa-plus"></i></div>
-        <i class="fas fa-comment nav-item"></i>
-        <i class="fas fa-th-large nav-item active"></i>
+        <i class="fas fa-comment text-white/50 text-xl"></i>
+        <i class="fas fa-th-large text-[#00f2ff] text-xl"></i>
     </nav>
 
+    <div id="comment-section">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-[#00f2ff]">التعليقات الحية</h3>
+            <i class="fas fa-times text-2xl" onclick="closeComments()"></i>
+        </div>
+        <div id="comments-list" class="flex-1 overflow-y-auto space-y-3 mb-4 text-sm"></div>
+        <div class="flex gap-2">
+            <input type="text" id="comment-input" class="flex-1 bg-white/10 p-3 rounded-xl outline-none" placeholder="اكتب تعليقك الحقيقي...">
+            <button onclick="postComment()" class="bg-[#00f2ff] text-black px-6 rounded-xl font-bold">نشر</button>
+        </div>
+    </div>
+
     <script>
+        // ربط Firebase للبيانات الحقيقية
         const firebaseConfig = { databaseURL: "https://forg-c693e-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        let currentVideoId = null;
+
+        // جلب الفيديوهات والتفاعلات
         db.ref('videos').on('value', snap => {
             const container = document.getElementById('feed');
             const data = snap.val(); if(!data) return;
@@ -92,8 +112,14 @@
                 div.innerHTML = `
                     <video loop playsinline src="${data[id].url}"></video>
                     <div class="side-btns">
-                        <div class="btn-box" onclick="like('${id}')"><i class="fas fa-heart"></i><span>${data[id].likes || 0}</span></div>
-                        <div class="btn-box"><i class="fas fa-comment-dots"></i><span>TALK</span></div>
+                        <div class="btn-box" onclick="addLike('${id}')">
+                            <i class="fas fa-heart"></i>
+                            <span id="like-count-${id}">${data[id].likes || 0}</span>
+                        </div>
+                        <div class="btn-box" onclick="openComments('${id}')">
+                            <i class="fas fa-comment-dots"></i>
+                            <span>TALK</span>
+                        </div>
                         <div class="btn-box"><i class="fas fa-share"></i></div>
                     </div>
                 `;
@@ -102,6 +128,40 @@
             initAutoPlay();
         });
 
+        // نظام الإعجابات الحقيقي
+        function addLike(id) {
+            db.ref(`videos/${id}/likes`).transaction(c => (c || 0) + 1);
+        }
+
+        // نظام التعليقات الحقيقي
+        function openComments(id) {
+            currentVideoId = id;
+            document.getElementById('comment-section').style.display = 'flex';
+            db.ref(`videos/${id}/comments`).on('value', snap => {
+                const list = document.getElementById('comments-list');
+                list.innerHTML = '';
+                const comments = snap.val();
+                if(comments) {
+                    Object.values(comments).forEach(c => {
+                        list.innerHTML += `<div class="bg-white/5 p-2 rounded-lg"><span class="text-[#00f2ff] font-bold">User:</span> ${c}</div>`;
+                    });
+                } else {
+                    list.innerHTML = '<p class="opacity-50 text-center">لا توجد تعليقات بعد. كن أول من يعلق!</p>';
+                }
+            });
+        }
+
+        function postComment() {
+            const input = document.getElementById('comment-input');
+            if(input.value && currentVideoId) {
+                db.ref(`videos/${currentVideoId}/comments`).push(input.value);
+                input.value = '';
+            }
+        }
+
+        function closeComments() { document.getElementById('comment-section').style.display = 'none'; }
+
+        // نظام الرفع
         const uploader = cloudinary.createUploadWidget({ cloudName: "dfscughol", uploadPreset: "update_vk" }, (err, res) => {
             if (res.event === "success") db.ref('videos').push({ url: res.info.secure_url, likes: 0 });
         });
