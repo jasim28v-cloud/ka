@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5"> <title>VITRUM | THE GLASS PROTOCOL 2027</title>
+    <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5">
+
+    <title>VITRUM | THE GLASS PROTOCOL 2027</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -18,7 +20,7 @@
         
         body { margin: 0; background: var(--deep-void); color: #fff; overflow: hidden; font-family: 'Cairo', sans-serif; height: 100vh; }
         
-        /* مشغل الفيديوهات الرأسي */
+        /* مشغل الفيديوهات الرأسي (Tiktok Style) */
         .v-scroller { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; background: #000; }
         .v-scroller::-webkit-scrollbar { display: none; }
         
@@ -62,6 +64,8 @@
     </style>
 </head>
 <body>
+
+    <a href="https://jasim28v-cloud.github.io/d3380b0969bc8e814852.txt" style="display:none;">VERIFY</a>
 
     <main class="v-scroller" id="main-feed"></main>
 
@@ -125,7 +129,7 @@
             uploadPreset: "update_vk" 
         }, (err, res) => {
             if (!err && res && res.event === "success") {
-                db.ref('videos').push({ url: res.info.secure_url, likes: 0 });
+                db.ref('videos').push({ url: res.info.secure_url, likes: 0, timestamp: Date.now() });
             }
         });
         document.getElementById('upload-btn').onclick = () => uploader.open();
