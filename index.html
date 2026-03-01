@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    [span_1](start_span)<meta name="hilltopads-site-verification" content="5eb623009b9d55080da5">[span_1](end_span)
+    <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5"> 
 
-    <title>VITRUM | FUTURE INTERFACE</title>
+    <title>VITRUM | PURE BLACK</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -15,29 +15,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Plus+Jakarta+Sans:wght@300;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Noto+Sans+Arabic:wght@400;700&display=swap');
         
-        :root {
-            --p-rose: #ff2d95;
-            --p-glow: rgba(255, 45, 149, 0.5);
-            --bg-dark: #050107;
-        }
-
         body {
-            background-color: var(--bg-dark);
+            background-color: #000;
             color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Noto Sans Arabic', sans-serif;
+            margin: 0;
             overflow: hidden;
-            height: 100vh;
         }
 
-        /* تصميم الخلفية المتحركة */
-        .bg-mesh {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a0214 0%, #050107 100%);
-            z-index: -1;
-        }
-
+        /* حاوية الفيديوهات - ملء الشاشة تماماً */
         .v-scroller {
             height: 100vh;
             overflow-y: scroll;
@@ -51,101 +39,82 @@
             width: 100vw;
             scroll-snap-align: start;
             position: relative;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #000;
         }
 
-        /* حاوية الفيديو الاحترافية */
-        .video-container {
+        video {
             width: 100%;
-            height: 92%;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255, 45, 149, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
+            object-fit: cover;
         }
 
-        video { width: 100%; height: 100%; object-fit: cover; }
-
-        /* HUD العائم */
-        .glass-header {
-            position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
-            width: 85%; padding: 15px 25px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
+        /* الطبقة العلوية - شفافة تماماً */
+        .top-nav {
+            position: absolute; top: 0; width: 100%; padding: 25px;
             display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
         }
 
-        .logo-text { font-family: 'Orbitron'; font-weight: 900; letter-spacing: 2px; background: linear-gradient(90deg, #fff, var(--p-rose)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { font-family: 'Orbitron'; font-weight: 900; font-size: 24px; color: #ff007f; text-shadow: 0 0 10px #ff007f; }
 
-        /* الأزرار الجانبية العائمة */
-        .action-hub {
-            position: absolute; right: 25px; bottom: 120px;
-            display: flex; flex-direction: column; gap: 15px;
+        /* أزرار التفاعل الجانبية - أنيقة وشفافة */
+        .side-actions {
+            position: absolute; right: 15px; bottom: 120px;
+            display: flex; flex-direction: column; gap: 20px;
             z-index: 100;
         }
 
-        .action-btn {
-            width: 55px; height: 55px;
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(15px);
-            border-radius: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .action-btn:hover { background: var(--p-rose); transform: scale(1.1) rotate(5deg); box-shadow: 0 0 25px var(--p-glow); }
-
-        /* شريط التنقل السفلي الحديث */
-        .nav-dock {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 320px; height: 75px;
-            background: rgba(15, 5, 15, 0.8);
-            backdrop-filter: blur(30px);
-            border-radius: 35px;
-            border: 1px solid rgba(255, 45, 149, 0.2);
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000;
-        }
-
-        .add-portal {
-            width: 55px; height: 55px;
-            background: linear-gradient(135deg, var(--p-rose), #ff8ec7);
-            border-radius: 22px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 20px var(--p-glow);
+        .action-node {
+            display: flex; flex-direction: column; align-items: center;
             cursor: pointer;
+        }
+
+        .icon-box {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; transition: 0.3s;
+        }
+
+        .action-node:active .icon-box { transform: scale(0.8); background: #ff007f; }
+
+        .count-label { font-size: 12px; margin-top: 5px; font-weight: bold; }
+
+        /* الشريط السفلي - تصميم عائم حديث */
+        .bottom-dock {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 380px; height: 65px;
+            background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(20px);
+            border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+        }
+
+        .center-add {
+            width: 50px; height: 50px; background: #fff; color: #000;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-mesh"></div>
-
     <main class="v-scroller" id="main-feed"></main>
 
-    <nav class="nav-dock">
-        <i class="fas fa-home text-white/50 text-xl hover:text-white transition"></i>
-        <div class="add-portal" id="upload-btn"><i class="fas fa-plus text-white text-2xl"></i></div>
-        <i class="fas fa-comment-dots text-white/50 text-xl hover:text-white transition" onclick="toggleChat(true)"></i>
+    <nav class="bottom-dock">
+        <i class="fas fa-home text-white text-xl"></i>
+        <div class="center-add" id="upload-btn"><i class="fas fa-plus"></i></div>
+        <i class="fas fa-comment-dots text-white/40 text-xl" onclick="toggleChat(true)"></i>
     </nav>
 
-    <div id="chat-layer" class="fixed inset-0 bg-black/95 z-[2000] hidden flex-col p-8">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-3xl font-black logo-text">NEURAL CHAT</h2>
-            <button onclick="toggleChat(false)" class="text-white/50 hover:text-white text-3xl">&times;</button>
+    <div id="chat-layer" class="fixed inset-0 bg-black/98 z-[2000] hidden flex-col p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold">التعليقات</h2>
+            <button onclick="toggleChat(false)" class="text-3xl">&times;</button>
         </div>
-        <div id="chat-display" class="flex-1 overflow-y-auto space-y-6 pr-4"></div>
-        <div class="mt-6 flex gap-3 p-4 bg-white/5 rounded-3xl border border-white/10">
-            <input type="text" id="chat-input" class="flex-1 bg-transparent outline-none text-lg" placeholder="اكتب رسالتك...">
-            <button onclick="pushMsg()" class="bg-[#ff2d95] px-10 py-4 rounded-2xl font-bold uppercase tracking-widest text-sm">Send</button>
+        <div id="chat-display" class="flex-1 overflow-y-auto space-y-4"></div>
+        <div class="mt-4 flex gap-2">
+            <input type="text" id="chat-input" class="flex-1 bg-white/10 rounded-full px-5 py-3 outline-none" placeholder="أضف تعليقاً...">
+            <button onclick="pushMsg()" class="bg-[#ff007f] px-6 py-3 rounded-full font-bold">نشر</button>
         </div>
     </div>
 
@@ -162,27 +131,19 @@
                 const section = document.createElement('section');
                 section.className = 'v-frame';
                 section.innerHTML = `
-                    <div class="glass-header">
-                        <span class="logo-text">VITRUM</span>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#ff2d95] to-purple-500"></div>
-                            <span class="text-xs font-bold tracking-tighter opacity-60">LIVE_FEED</span>
-                        </div>
+                    <div class="top-nav">
+                        <span class="logo">VITRUM</span>
+                        <i class="fas fa-search opacity-50"></i>
                     </div>
-                    <div class="video-container">
-                        <video loop playsinline src="${data[id].url}"></video>
-                        <div class="action-hub">
-                            <button class="action-btn" onclick="likeVideo('${id}')">
-                                <i class="fas fa-heart text-[#ff2d95]"></i>
-                                <span class="text-[9px] mt-1 font-bold">${data[id].likes || 0}</span>
-                            </button>
-                            <button class="action-btn" onclick="shareVideo('${data[id].url}')">
-                                <i class="fas fa-share-nodes text-white/80"></i>
-                            </button>
+                    <video loop playsinline src="${data[id].url}"></video>
+                    <div class="side-actions">
+                        <div class="action-node" onclick="likeVideo('${id}')">
+                            <div class="icon-box"><i class="fas fa-heart text-white"></i></div>
+                            <span class="count-label">${data[id].likes || 0}</span>
                         </div>
-                        <div class="absolute bottom-10 left-10 text-white/90 z-50">
-                            <h3 class="font-bold text-lg mb-1">#FuturePulse2027</h3>
-                            <p class="text-sm opacity-60 font-light">استكشاف المدى الرقمي الجديد</p>
+                        <div class="action-node" onclick="toggleChat(true)">
+                            <div class="icon-box"><i class="fas fa-comment-dots"></i></div>
+                            <span class="count-label">ردود</span>
                         </div>
                     </div>
                 `;
