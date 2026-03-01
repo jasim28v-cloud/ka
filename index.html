@@ -2,12 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5">
     <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    <title>VITRUM | NEO-VISION 2026</title>
+    <title>SHADOW | LIVE</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -16,141 +16,66 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Plus+Jakarta+Sans:wght@300;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Cairo:wght@400;700&display=swap');
         
-        :root {
-            --neon-pink: #ff007f;
-            --neon-blue: #00f2ff;
-            --bg-black: #020202;
-        }
+        body { background: #000; color: #fff; margin: 0; overflow: hidden; font-family: 'Cairo', sans-serif; }
 
-        body {
-            background-color: var(--bg-black);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0; overflow: hidden; height: 100vh;
+        /* الهيدر العلوي (نفس الصورة) */
+        .shadow-header {
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 15px; z-index: 1000;
         }
+        .logo-shadow { font-family: 'Orbitron'; font-style: italic; font-weight: 900; font-size: 20px; letter-spacing: 1px; }
+        .level-badge { color: #00f2ff; font-family: 'Orbitron'; font-size: 10px; font-weight: bold; border-bottom: 1px solid #00f2ff; }
 
-        /* حاوية الفيديوهات بتأثير التمرير المغناطيسي */
-        .v-scroller {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scrollbar-width: none;
+        /* حاوية الفيديوهات */
+        .v-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
+        .v-container::-webkit-scrollbar { display: none; }
+        .v-slide { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* الأيقونات الجانبية (نفس الصورة) */
+        .side-btns { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 15px; z-index: 100; }
+        .btn-box { 
+            width: 50px; height: 50px; background: rgba(0,0,0,0.5); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .v-scroller::-webkit-scrollbar { display: none; }
+        .btn-box i { font-size: 18px; }
+        .btn-box span { font-size: 10px; margin-top: 2px; font-weight: bold; }
 
-        .v-frame {
-            height: 100vh; width: 100vw;
-            scroll-snap-align: start;
-            position: relative;
-            background: #000;
+        /* شريط التحكم السفلي (الأبيض - نفس الصورة) */
+        .nav-footer {
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; height: 65px; background: rgba(0,0,0,0.9);
+            border-radius: 15px; display: flex; justify-content: space-around; align-items: center;
+            padding: 0 10px; border: 1px solid rgba(255,255,255,0.1);
         }
-
-        video {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.9) contrast(1.1);
-        }
-
-        /* HUD العائم (الشعار العلوي) */
-        .brand-header {
-            position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 100; text-align: center;
-        }
-        .logo-v {
-            font-family: 'Orbitron'; font-weight: 900; font-size: 32px;
-            background: linear-gradient(180deg, #fff 0%, var(--neon-pink) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(255,0,127,0.5));
-            letter-spacing: 8px;
-        }
-
-        /* الأزرار الجانبية (ثيم النيون السائل) */
-        .side-controls {
-            position: absolute; right: 20px; bottom: 140px;
-            display: flex; flex-direction: column; gap: 28px; z-index: 100;
-        }
-
-        .control-unit {
-            display: flex; flex-direction: column; align-items: center; cursor: pointer;
-        }
-
-        .icon-hex {
-            width: 58px; height: 58px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .control-unit:active .icon-hex {
-            transform: scale(0.9) rotate(-10deg);
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 20px var(--neon-pink);
-        }
-
-        .stat-val {
-            font-size: 11px; margin-top: 8px; font-weight: 800;
-            color: rgba(255,255,255,0.6); font-family: 'Orbitron';
-        }
-
-        /* شريط التنقل السفلي (المستقبلي) */
-        .neo-dock {
-            position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%);
-            width: 240px; height: 70px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(30px);
-            border-radius: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .plus-portal {
-            width: 52px; height: 52px;
-            background: #fff; color: #000;
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; transition: 0.3s;
-            box-shadow: 0 0 15px rgba(255,255,255,0.3);
-        }
-
-        .plus-portal:hover { transform: translateY(-5px) rotate(90deg); background: var(--neon-pink); color: #fff; }
-
-        /* واجهة الدردشة الاحترافية */
-        #chat-panel {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 2000; display: none; flex-direction: column; padding: 40px 30px;
+        .nav-item { color: #555; font-size: 20px; }
+        .nav-item.active { color: #00f2ff; }
+        .add-master { 
+            width: 50px; height: 45px; background: #fff; color: #000; 
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px;
         }
     </style>
 </head>
 <body>
 
-    <main class="v-scroller" id="main-feed"></main>
+    <header class="shadow-header">
+        <div class="logo-shadow">SHADØW</div>
+        <div class="level-badge">LEVEL 34 (SHADOW_LORD)</div>
+    </header>
 
-    <div class="brand-header"><div class="logo-v">VITRUM</div></div>
+    <main class="v-container" id="feed"></main>
 
-    <nav class="neo-dock">
-        <i class="fas fa-compass text-white/30 text-2xl"></i>
-        <div class="plus-portal" id="upload-btn"><i class="fas fa-plus"></i></div>
-        <i class="fas fa-comment-alt text-white/30 text-2xl" onclick="toggleChat(true)"></i>
+    <nav class="nav-footer">
+        <i class="fas fa-home nav-item"></i>
+        <i class="fas fa-share-alt nav-item"></i>
+        <div class="add-master" id="upload-btn"><i class="fas fa-plus"></i></div>
+        <i class="fas fa-comment nav-item"></i>
+        <i class="fas fa-th-large nav-item active"></i>
     </nav>
-
-    <div id="chat-panel">
-        <div class="flex justify-between items-center mb-12">
-            <h2 class="text-4xl font-black italic tracking-tighter">FEEDBACK</h2>
-            <i class="fas fa-times text-3xl opacity-30" onclick="toggleChat(false)"></i>
-        </div>
-        <div id="chat-display" class="flex-1 overflow-y-auto space-y-6"></div>
-        <div class="mt-8 flex gap-4 p-3 bg-white/5 rounded-2xl border border-white/10">
-            <input type="text" id="chat-input" class="flex-1 bg-transparent px-4 outline-none text-lg" placeholder="اكتب شيئاً مذهلاً...">
-            <button onclick="pushMsg()" class="bg-white text-black px-8 py-3 rounded-xl font-black text-sm uppercase">Post</button>
-        </div>
-    </div>
 
     <script>
         const firebaseConfig = { databaseURL: "https://forg-c693e-default-rtdb.firebaseio.com/" };
@@ -158,55 +83,40 @@
         const db = firebase.database();
 
         db.ref('videos').on('value', snap => {
-            const feed = document.getElementById('main-feed');
+            const container = document.getElementById('feed');
             const data = snap.val(); if(!data) return;
-            feed.innerHTML = '';
+            container.innerHTML = '';
             Object.keys(data).reverse().forEach(id => {
-                const section = document.createElement('section');
-                section.className = 'v-frame';
-                section.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'v-slide';
+                div.innerHTML = `
                     <video loop playsinline src="${data[id].url}"></video>
-                    <div class="side-controls">
-                        <div class="control-unit" onclick="likeVideo('${id}')">
-                            <div class="icon-hex"><i class="fas fa-heart text-white text-xl"></i></div>
-                            <span class="stat-val">${data[id].likes || 0}</span>
-                        </div>
-                        <div class="control-unit" onclick="toggleChat(true)">
-                            <div class="icon-hex"><i class="fas fa-comment-dots text-white text-xl"></i></div>
-                            <span class="stat-val">REPLY</span>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-32 left-8 max-w-[70%]">
-                        <p class="text-white/40 text-xs font-bold mb-2 tracking-[3px]">PREMIUM CONTENT</p>
-                        <h3 class="text-2xl font-black leading-tight">شاهد المستقبل بوضوح عالٍ ⚡</h3>
+                    <div class="side-btns">
+                        <div class="btn-box" onclick="like('${id}')"><i class="fas fa-heart"></i><span>${data[id].likes || 0}</span></div>
+                        <div class="btn-box"><i class="fas fa-comment-dots"></i><span>TALK</span></div>
+                        <div class="btn-box"><i class="fas fa-share"></i></div>
                     </div>
                 `;
-                feed.appendChild(section);
+                container.appendChild(div);
             });
-            initObserver();
+            initAutoPlay();
         });
 
-        const uploader = cloudinary.createUploadWidget({ cloudName: "dfscughol", uploadPreset: "update_vk" }, (e, r) => {
-            if (r.event === "success") db.ref('videos').push({ url: r.info.secure_url, likes: 0 });
+        const uploader = cloudinary.createUploadWidget({ cloudName: "dfscughol", uploadPreset: "update_vk" }, (err, res) => {
+            if (res.event === "success") db.ref('videos').push({ url: res.info.secure_url, likes: 0 });
         });
         document.getElementById('upload-btn').onclick = () => uploader.open();
 
-        function likeVideo(id) { db.ref(`videos/${id}/likes`).transaction(c => (c || 0) + 1); }
-        function toggleChat(s) { document.getElementById('chat-panel').style.display = s ? 'flex' : 'none'; }
-        
-        function initObserver() {
+        function initAutoPlay() {
             const obs = new IntersectionObserver(entries => {
                 entries.forEach(e => {
                     const v = e.target.querySelector('video');
                     if(e.isIntersecting) v.play(); else v.pause();
                 });
             }, { threshold: 0.8 });
-            document.querySelectorAll('.v-frame').forEach(f => obs.observe(f));
+            document.querySelectorAll('.v-slide').forEach(s => obs.observe(s));
         }
-
-        document.addEventListener('click', () => { 
-            document.querySelectorAll('video').forEach(v => v.muted = false); 
-        }, {once:true});
+        document.addEventListener('click', () => { document.querySelectorAll('video').forEach(v => v.muted = false); }, {once:true});
     </script>
 </body>
 </html>
