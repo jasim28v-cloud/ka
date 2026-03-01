@@ -7,7 +7,7 @@
     <meta name="hilltopads-site-verification" content="5eb623009b9d55080da5">
     <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    <title>VITRUM | THE ELITE INTERFACE</title>
+    <title>VITRUM | FULL IMMERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -16,26 +16,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Noto+Sans+Arabic:wght@300;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Noto+Sans+Arabic:wght@300;800&display=swap');
         
-        :root { --neon-pink: #ff007f; --dark-space: #000000; }
-
         body {
-            background-color: var(--dark-space);
+            background-color: #000;
             color: #fff;
             font-family: 'Noto Sans Arabic', sans-serif;
-            margin: 0;
-            overflow: hidden;
-            height: 100vh;
+            margin: 0; padding: 0; overflow: hidden; height: 100vh;
         }
 
-        /* حاوية الفيديوهات (التمرير السلس) */
+        /* التمرير العمودي الكامل */
         .v-scroller {
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scrollbar-width: none;
-            background: #000;
         }
         .v-scroller::-webkit-scrollbar { display: none; }
 
@@ -44,88 +39,97 @@
             width: 100vw;
             scroll-snap-align: start;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #000;
         }
 
+        /* الفيديو يملأ الشاشة تماماً */
         video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; /* لضمان ملء الشاشة دون تشويه */
         }
 
-        /* واجهة المستخدم العلوية (Header) */
-        .glass-nav {
-            position: absolute; top: 0; width: 100%; padding: 30px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        /* الشعار العلوي - أنيق وشفاف */
+        .header-brand {
+            position: absolute; top: 20px; left: 20px;
+            z-index: 100; font-family: 'Orbitron';
+            font-size: 20px; font-weight: 900;
+            letter-spacing: 3px; color: #fff;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
         }
-        .logo { font-family: 'Orbitron'; font-weight: 900; font-size: 26px; color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
 
-        /* أزرار التفاعل الجانبية */
-        .side-bar {
-            position: absolute; right: 20px; bottom: 130px;
-            display: flex; flex-direction: column; gap: 25px;
-            z-index: 100;
+        /* الأزرار الجانبية - بتصميم شفاف جداً */
+        .side-stack {
+            position: absolute; right: 12px; bottom: 100px;
+            display: flex; flex-direction: column; gap: 20px; z-index: 100;
         }
-        .action-item {
-            display: flex; flex-direction: column; align-items: center;
-            cursor: pointer; transition: 0.3s;
+
+        .btn-unit {
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
         }
-        .icon-circle {
-            width: 52px; height: 52px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px);
+
+        .icon-wrap {
+            width: 45px; height: 45px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1); font-size: 22px;
+            font-size: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .action-item:active .icon-circle { transform: scale(0.85); background: var(--neon-pink); }
-        .label { font-size: 11px; margin-top: 6px; font-weight: bold; color: rgba(255,255,255,0.7); }
 
-        /* شريط التنقل السفلي (The Dock) */
-        .main-dock {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 400px; height: 70px;
-            background: rgba(15, 15, 15, 0.9); backdrop-filter: blur(25px);
-            border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.05);
+        .val-text { font-size: 10px; margin-top: 4px; font-weight: 800; color: #fff; }
+
+        /* شريط التنقل السفلي - مخفي جزئياً لتعزيز حجم الفيديو */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            height: 80px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
             display: flex; justify-content: space-around; align-items: center; z-index: 1000;
         }
-        .add-btn {
-            width: 54px; height: 54px; background: #fff; color: #000;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 22px; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.2);
+
+        .upload-portal {
+            width: 45px; height: 35px; background: #fff; color: #000;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; box-shadow: 0 0 15px rgba(255,255,255,0.4);
         }
+
+        /* معلومات الفيديو أسفل اليسار */
+        .video-meta {
+            position: absolute; bottom: 90px; left: 15px;
+            max-width: 75%; z-index: 100;
+        }
+        .v-title { font-weight: 800; font-size: 16px; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
     <main class="v-scroller" id="main-feed"></main>
 
-    <nav class="main-dock">
+    <div class="header-brand">VITRUM</div>
+
+    <nav class="bottom-nav">
         <i class="fas fa-home text-white text-xl"></i>
-        <div class="add-btn" id="upload-btn"><i class="fas fa-plus"></i></div>
-        <i class="fas fa-comment-dots text-white/30 text-xl" onclick="toggleChat(true)"></i>
+        <div class="upload-portal" id="upload-btn"><i class="fas fa-plus"></i></div>
+        <i class="fas fa-comment-dots text-white/50 text-xl" onclick="toggleChat(true)"></i>
     </nav>
 
-    <div id="chat-layer" class="fixed inset-0 bg-black/98 z-[2000] hidden flex-col p-8">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-2xl font-bold tracking-tighter">COMMENTS</h2>
-            <button onclick="toggleChat(false)" class="text-4xl text-white/50">&times;</button>
+    <div id="chat-layer" class="fixed inset-0 bg-black/95 z-[2000] hidden flex-col p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold">REPLIES</h2>
+            <i class="fas fa-times text-2xl opacity-50" onclick="toggleChat(false)"></i>
         </div>
-        <div id="chat-display" class="flex-1 overflow-y-auto space-y-5"></div>
-        <div class="mt-6 flex gap-3 p-2 bg-white/5 rounded-full border border-white/10">
-            <input type="text" id="chat-input" class="flex-1 bg-transparent px-5 py-2 outline-none" placeholder="اكتب ردك هنا...">
-            <button onclick="pushMsg()" class="bg-[#ff007f] px-8 py-3 rounded-full font-bold">إرسال</button>
+        <div id="chat-display" class="flex-1 overflow-y-auto"></div>
+        <div class="mt-4 flex gap-2">
+            <input type="text" id="chat-input" class="flex-1 bg-white/10 rounded-full px-5 py-3 outline-none" placeholder="قل شيئاً...">
+            <button onclick="pushMsg()" class="bg-[#ff007f] px-6 py-3 rounded-full font-bold">ارسل</button>
         </div>
     </div>
 
     <script>
-        // ربط قاعدة البيانات
         const firebaseConfig = { databaseURL: "https://forg-c693e-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // حقن الفيديوهات
         db.ref('videos').on('value', snap => {
             const feed = document.getElementById('main-feed');
             const data = snap.val(); if(!data) return;
@@ -134,16 +138,19 @@
                 const section = document.createElement('section');
                 section.className = 'v-frame';
                 section.innerHTML = `
-                    <div class="glass-nav"><span class="logo">VITRUM</span></div>
                     <video loop playsinline src="${data[id].url}"></video>
-                    <div class="side-bar">
-                        <div class="action-item" onclick="likeVideo('${id}')">
-                            <div class="icon-circle"><i class="fas fa-heart text-[#ff007f]"></i></div>
-                            <span class="label">${data[id].likes || 0}</span>
+                    <div class="video-meta">
+                        <div class="v-title">@User_${id.substring(1,5)}</div>
+                        <p class="text-sm opacity-80">محتوى حصري على منصة VITRUM ✨</p>
+                    </div>
+                    <div class="side-stack">
+                        <div class="btn-unit" onclick="likeVideo('${id}')">
+                            <div class="icon-wrap"><i class="fas fa-heart text-white"></i></div>
+                            <span class="val-text">${data[id].likes || 0}</span>
                         </div>
-                        <div class="action-item" onclick="toggleChat(true)">
-                            <div class="icon-circle"><i class="fas fa-comment"></i></div>
-                            <span class="label">TALK</span>
+                        <div class="btn-unit" onclick="toggleChat(true)">
+                            <div class="icon-wrap"><i class="fas fa-comment-dots"></i></div>
+                            <span class="val-text">CHAT</span>
                         </div>
                     </div>
                 `;
@@ -152,7 +159,6 @@
             initObserver();
         });
 
-        // نظام الرفع السحابي
         const uploader = cloudinary.createUploadWidget({ cloudName: "dfscughol", uploadPreset: "update_vk" }, (e, r) => {
             if (r.event === "success") db.ref('videos').push({ url: r.info.secure_url, likes: 0 });
         });
@@ -171,7 +177,6 @@
             document.querySelectorAll('.v-frame').forEach(f => obs.observe(f));
         }
 
-        // تفعيل الصوت عند اللمس
         document.addEventListener('click', () => { 
             document.querySelectorAll('video').forEach(v => v.muted = false); 
         }, {once:true});
